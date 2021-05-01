@@ -5,10 +5,12 @@ KoLmafia utility library for processing information about one's clan
 
     cl_clannie
     
-Represents a player who is a clanmate.
+Represents a player-character who is a clanmate.
 
     cl_player
     
+Represents a player-character.
+
     distribution
     
     dungeon_run
