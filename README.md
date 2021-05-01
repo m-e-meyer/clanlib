@@ -5,6 +5,8 @@ KoLmafia utility library for processing information about one's clan
 
     cl_clannie
     
+Represents a player who is a clanmate.
+
     cl_player
     
     distribution
