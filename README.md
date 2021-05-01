@@ -3,18 +3,71 @@ KoLmafia utility library for processing information about one's clan
 
 ## Record types
 
-    cl_clannie
+### `cl_clannie`
     
-Represents a player-character who is a clanmate.
+Represents a player-character who is a clanmate.  There are two kinds of fields: Those obtainable from the clan roster, and those obtainable from the detailed clan member stats.
 
-    cl_player
-    
-Represents a player-character.
+#### Clan roster
 
-    distribution
+* `int id`: Character's numeric ID
+* `boolean is_active`: Whether the character has logged in in the last 40 days
+* `string name`: Character's name
+* `string rank`: Character's clan rank
+* `string title`: Character's clan title
+
+#### Detailed member stats
+
+* `int ascensions`: Number of character's ascensions completed, including Hardcore
+* `int hardcore_ascensions`: Number of character's Hardcore ascensions completed
+* `int karma`: Clan karma accumulated by character
+* `int moxie`: Character's current base Moxie
+* `int muscle`: Character's current base Muscle
+* `int mysticality`: Character's current base Mysticality
+* `string player_class`: Character's current class
+* `int pvp`: Character's PvP wins in current season?
+
+### `cl_player`
     
-    dungeon_run
-    
+Represents a player-character.  There are two kinds of fields: Those obtainable from Clan recruiter roster displays, and those obtainable from the character's public page.
+
+#### Clan Recruiter roster
+
+* `int id`: Numberic id of character
+* `boolean is_hardcore`: Whether the character is in a Hardcore run
+* `boolean is_ronin`: Whther the character is under Ronin restrictions
+* `int level`: Character's level
+* `string name`: Character's name
+* `string title`: Character's clan title
+
+#### Public character page
+
+* `int ascensions`: Number of ascensions 
+* `int created`: Date the player-character was created, in number of seconds since midnight, Jan 1, 1970
+* `int familiars`: Number of familiars acquired
+* `int last_login`: Date the player-character last logged in, in number of seconds since midnight, Jan 1, 1970
+* `int tattoos`: Number of tattoos acquired
+* `int trophies`: Number of trophies acquired
+* `int turns_run`: Number of turns played in current ascension
+* `int turns_total`: Number of turns played over all ascensions
+
+### `distribution`
+
+Represents a loot distribution event.  Has the following fields:
+* `string giver`: Name of the character that distributed the loot
+* `string loot`: Name of the piece of loot distributed
+* `string receiver`: Name of the character that received the loot
+
+### `dungeon_run`
+
+Represents a completed dungeon run.  Has the following fields:
+
+* `distribution[int] distribs`: Map of loot distributions for that run.  Keys are 0, 1, 2, ...
+* `int dungeon`: Code identifying the dungeon.  0 = Hobopolis, 1 = Slime Tube, 2 = Haunted Sorority, 3 = Dreadsylvania.
+* `int end_date`: Date the run was ended, in number of seconds since midnight, Jan 1, 1970
+* `int id`: Numeric identifier for the dungeon run
+* `int start_date`: Date the run was started, in number of seconds since midnight, Jan 1, 1970
+* `int turns`: Number of adventures taken to finish the dungeon
+
 ## Procedures
     
     cl_player[int] clan_members(int clanid)
