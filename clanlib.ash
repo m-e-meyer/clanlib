@@ -458,18 +458,6 @@ string[string] players_loot(dungeon_run[int] raidlogs, string player)
 
 // ==============================================================
 
-string stash_file_name()
-{
-    return get_clan_name().replace_string(' ', '_') + "_stash.txt";
-}
-
-int[int][string][string] load_stash_file()
-{
-    int[int][string][string] result; 
-    file_to_map(stash_file_name(), result);
-    return result;
-}
-
 // Is this a faxbot?
 boolean is_faxbot(string player_and_id)
 {
