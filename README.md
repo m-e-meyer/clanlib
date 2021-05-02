@@ -88,7 +88,31 @@ Returns a map of the members of the clan with the given clan ID, indexed by 0, 1
     void get_clan_activity(string[string][int][string][string][int] activity,
                            int[int][string][item] stash_activity)
 
-Reads data from the clan activity data files into the two given maps (see `activity_file_name()` and `stash_activity_file_name()`), adds data to the maps from the Clan Activity Log of the current clan, and writes the updated data into the clan activity data files.  
+Reads data from the clan activity data files into the two given maps (see `activity_file_name()` and `stash_activity_file_name()`), adds data to the maps from the Clan Activity Log of the current clan, and writes the updated data into the clan activity data files.  The data are left in the maps for use after `get_clan_activity()` completes.
+
+The keys to the activity map are, in order:
+
+* `string` denoting the type of activity: `"basement"` for basement activity, `"inout"` for entering and leaving the clan, `"lounge"` for VIP lounge activity, and `"misc"` for miscellaneous activity.
+* `int` denoting the time of the activity, expressed as a human-readable timestamp.  For example, `202105011645` is May 1, 2021, at 4:45 PM
+* `string` giving the name of the player-character that did something
+* `string` code for what the player-character did: 
+  * `"basement"` activity has `"closed"` for closing a dungeon, `"meat"` for recovering meat from a dungeon, and `"opened"` for opening a dungeon
+  * `"inout"` activity has `"admitted"` for admitting a new member, `"otherclan"` for joining another clan, and`"rejoined"` for rejoining the current clan
+  * `"lounge"` activity has `"fabricated"` for fabricating something in the Floundry
+  * `"misc"` activity has `"applied"` for applying for clan membership, `"chgrank"` for changing a clan member's rank, `"chgtitle"` for changing a clan member's title, `"modrank"` for modifying a clan rank, `"posted"` for posting an announcement, and `"xfrlead"` for transferring leadership
+* `int` is a serial number 
+
+And the value of the map is a string denoting the object of the activity, or `-` if there is no object.
+
+Note: Activity by CheeseFax and Easyfax are not included.
+
+The keys to the stash activity map are, in order:
+
+* `int` denoting the time of the activity, expressed as a human-readable timestamp.  For example, `202105011645` is May 1, 2021, at 4:45 PM
+* `string` giving the name of the player-character that moved things into or out of the stash
+* `item` denoting what item was moved.  If `$item[none]`, then the player contributed meat. 
+
+And the value of the map is a number denoting how many of the item was moved, or how much meat was contributed.  If positive, items were added to the stash; if negative, items were taken from the stash.
 
     cl_clannie[int] get_clannies()
 
