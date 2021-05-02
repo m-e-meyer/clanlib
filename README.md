@@ -26,6 +26,13 @@ Represents a player-character who is a clanmate.  There are two kinds of fields:
 * `string player_class`: Character's current class
 * `int pvp`: Character's PvP wins in current season?
 
+### `cl_name_id`
+
+Simple pairing of a clan name with its clan ID number.  The fields are:
+
+* `int id`: ID number of the clan
+* `string name`: Name of the clan
+
 ### `cl_player`
     
 Represents a player-character.  There are two kinds of fields: Those obtainable from Clan recruiter roster displays, and those obtainable from the character's public page.
@@ -70,23 +77,47 @@ Represents a completed dungeon run.  Has the following fields:
 
 ## Procedures
     
+    string activity_file_name()
+
+Returns the name of the data file in which activity data for the current clan is stored.
+
     cl_player[int] clan_members(int clanid)
+    
+Returns a map of the members of the clan with the given clan ID, indexed by 0, 1, 2, ...
     
     void get_clan_activity(string[string][int][string][string][int] activity,
                            int[int][string][item] stash_activity)
 
+Reads data from the clan activity data files into the two given maps (see `activity_file_name()` and `stash_activity_file_name()`), adds data to the maps from the Clan Activity Log of the current clan, and writes the updated data into the clan activity data files.  
+
     cl_clannie[int] get_clannies()
+
+Returns a map of all the members of the current clan, indexed by the characters' ID numbers.
     
     boolean is_active(cl_player p)
+
+Returns `true` if and only if the given player-character has logged in within the last 40 days.
     
     boolean join_clan(string name)
+
+Join the clan (to which you should be whitelisted) with the given name (case-insensitive).  Returns `false` if the attempt to join failed.
     
+    void load_raidlogs(dungeon_run[int] raidlogs) 
+    
+Populates the given map `raidlogs` with the logs of the current clan's basement runs.  Keys for the map are numbered 1, 2, 3, ..., starting with the oldest run.
+
     dungeon_run[int] load_raidlogs() 
     
+Similar to the previous procedure, but returns the raid logs in a new map.
+    
     cl_name_id lookup_clan_id(string name)
+
+Returns a clan name/clan ID number pair for the clan with the given name (case-insensitive).
     
     string[string] players_loot(dungeon_run[int] raidlogs, string player)
     
+Given a map of basement raid logs and the name of a player-character, returns a map of the loot received by the character.  The keys of the map are strings of the form `"yyyy-MM-dd n"`, where `yyyy-MM-dd` is a date like `2021-05-01` and `n` is a serial number, in case the character receives multiple pieces of loot in the same day.
+
     string stash_activity_file_name()
-    
-    string stash_file_name()
+
+Returns the name of the data file in which stash activity data for the current clan is stored.
