@@ -98,7 +98,7 @@ The keys to the activity map are, in order:
 * `string` code for what the player-character did: 
   * `"basement"` activity has `"closed"` for closing a dungeon, `"meat"` for recovering meat from a dungeon, and `"opened"` for opening a dungeon
   * `"inout"` activity has `"admitted"` for admitting a new member, `"otherclan"` for joining another clan, and`"rejoined"` for rejoining the current clan
-  * `"lounge"` activity has `"fabricated"` for fabricating something in the Floundry
+  * `"lounge"` activity has `"ate"` for eating from the Hot Dog Stand and `"fabricated"` for fabricating something in the Floundry
   * `"misc"` activity has `"applied"` for applying for clan membership, `"chgrank"` for changing a clan member's rank, `"chgtitle"` for changing a clan member's title, `"modrank"` for modifying a clan rank, `"posted"` for posting an announcement, and `"xfrlead"` for transferring leadership
 * `int` is a serial number 
 
