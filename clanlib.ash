@@ -757,6 +757,59 @@ void get_clan_activity(string[string][int][string][string][int] activity,
 
 // ===============================================================
 
+int[item] get_clan_stash()
+{
+    int[item] result;
+    buffer b = visit_url("clan_stash.php");
+    matcher tm = create_matcher("Take an item from the Goodies Hoard:(.*)", b);
+    if (find(tm)) {
+        string its = group(tm, 1);
+        matcher im = create_matcher("<option value=([0-9]*) descid=([0-9]*)>([^<]*?)( [(]([0-9]*)[)])?<",
+                                    its);
+        while (find(im)) {
+            int id = to_int(group(im, 1));
+            int quant = 1;
+            if (group(im, 5) != "") {
+                quant = to_int(group(im, 5));
+            }
+            result[to_item(id)] = quant;
+        }
+    }
+    return result;
+}
+
+int add_to_stash(int n, item it)
+{
+    buffer b = visit_url("clan_stash.php?action=addgoodies&qty1=" + to_string(n) 
+                         + "&item1=" + to_string(to_int(it)));
+    matcher m = create_matcher("You add ([0-9]*)", b);
+    int result = 0;
+    if (find(m)) {
+        string q = group(m, 1);
+        result = to_int(q);
+    }
+    return result;
+}
+
+int take_from_stash(int n, item it)
+{
+    buffer b = visit_url("clan_stash.php?action=takegoodies&quantity=" + to_string(n) 
+                         + "&whichitem=" + to_string(to_int(it)));
+    matcher m = create_matcher("You acquire (<b>)?((an item)|([0-9]*))", b);
+    int result = 0;
+    if (find(m)) {
+        string q = group(m, 2);
+        if (q == "an item") {
+            result = 1;
+        } else {
+            result = to_int(q);
+        }
+    }
+    return result;
+}
+
+// ===============================================================
+
 void main(string op)
 {
     dungeon_run[int] raidlogs;
@@ -849,16 +902,33 @@ void main(string op)
         //    print(`[{cat}] {when}: {who} {what} {whom}`);
         //}
         // What items get taken out of the stash?
-        int[item] demand;
+        int[string] demand;
         foreach when, who, it, n in stash_activity {
             if (n < 0) {
-                demand[it] = demand[it] - n;
+                string s = to_lower_case(to_string(it));
+                demand[s] = demand[s] - n;
             }
         }
         print("Total Demand:");
         foreach it, d in demand {
             print(`{d} {it}`);
         }
+        break;
+    case "stash":
+        int[item] stash = get_clan_stash();
+        int[string] sorted_stash;
+        foreach it, q in stash {
+            sorted_stash[to_lower_case(to_string(it))] = q;
+        }
+        foreach it, q in sorted_stash {
+            print(`{q} {it}`);
+        }
+        /*
+        int q = add_to_stash(8, $item[2-ball]);
+        print("Put " + q, "olive");
+        q = take_from_stash(2, $item[2-ball]);
+        print("Got " + q, "olive");
+        */
         break;
     default:
         print("Command '" + cmd + "' unknown", "red");
